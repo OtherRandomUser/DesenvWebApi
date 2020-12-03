@@ -48,13 +48,12 @@ namespace DesenvWebApi.WebApi.Controllers
                 var curriculum = await repo.GetQueryable()
                     .Include(c => c.Subjects)
                         .ThenInclude(s => s.Subject)
-                    .Select(u => (CurriculumViewModel) u)
                     .SingleOrDefaultAsync(u => u.Id == id);
 
                 if (curriculum is null)
                     return NotFound();
 
-                return Ok(curriculum);
+                return Ok((CurriculumViewModel) curriculum);
             });
 
         [HttpPost]

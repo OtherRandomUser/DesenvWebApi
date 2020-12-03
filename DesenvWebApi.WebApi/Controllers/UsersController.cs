@@ -46,13 +46,12 @@ namespace DesenvWebApi.WebApi.Controllers
                 var repo = _unitOfWork.GetRepository<User>();
                 var user = await repo.GetQueryable()
                     .Include(u => u.Curriculum)
-                    .Select(u => (UserViewModel) u)
                     .SingleOrDefaultAsync(u => u.Id == id);
 
                 if (user is null)
                     return NotFound();
 
-                return Ok(user);
+                return Ok((UserViewModel) user);
             });
 
         [HttpPost]
