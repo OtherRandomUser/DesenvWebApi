@@ -27,7 +27,6 @@ namespace DesenvWebApi.WebApi.ViewModels
                 Code = subject.Code,
                 Name = subject.Name,
                 Description = subject.Description,
-                Curriculums = subject.Curriculums.Select(c => (CurriculumViewModel) c.Curriculum)
             };
         }
     }

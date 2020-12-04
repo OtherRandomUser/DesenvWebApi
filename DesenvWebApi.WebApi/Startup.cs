@@ -60,6 +60,12 @@ namespace DesenvWebApi.WebApi
                 c.RoutePrefix = string.Empty;
             });
 
+            app.UseCors((e) => {
+                e.AllowAnyHeader();
+                e.AllowAnyMethod();
+                e.AllowAnyOrigin();
+            });
+
             app.UseMvc();
         }
     }

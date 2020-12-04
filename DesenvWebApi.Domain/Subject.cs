@@ -16,7 +16,7 @@ namespace DesenvWebApi.Domain
         {
         }
 
-        public Subject(string code, string name, string description)
+        public Subject(string code, string name)
         {
             if (string.IsNullOrWhiteSpace(code))
                 throw new ArgumentNullException("Subject code can't be null");
@@ -24,7 +24,6 @@ namespace DesenvWebApi.Domain
             Code = code;
 
             SetName(name);
-            SetDescription(description);
 
             Curriculums = new Collection<SubjectCurriculum>();
         }
@@ -35,14 +34,6 @@ namespace DesenvWebApi.Domain
                 throw new ArgumentNullException("Subject name can't be null");
 
             Name = name;
-        }
-
-        public void SetDescription(string description)
-        {
-            if (string.IsNullOrWhiteSpace(description))
-                throw new ArgumentNullException("Subject description can't be null");
-
-            Description = description;
         }
     }
 }

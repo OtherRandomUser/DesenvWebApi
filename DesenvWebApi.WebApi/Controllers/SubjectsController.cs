@@ -60,7 +60,7 @@ namespace DesenvWebApi.WebApi.Controllers
             {
                 var repo = _unitOfWork.GetRepository<Subject>();
 
-                var subject = new Subject(im.Code, im.Name, im.Description);
+                var subject = new Subject(im.Code, im.Name);
                 repo.Add(subject);
                 await _unitOfWork.SaveChangesAsync();
 
@@ -80,11 +80,6 @@ namespace DesenvWebApi.WebApi.Controllers
                 if (!string.IsNullOrWhiteSpace(im.Name))
                 {
                     subject.SetName(im.Name);
-                }
-
-                if (!string.IsNullOrWhiteSpace(im.Description))
-                {
-                    subject.SetDescription(im.Description);
                 }
 
                 repo.Update(subject);

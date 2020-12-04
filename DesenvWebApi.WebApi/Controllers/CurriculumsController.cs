@@ -1,3 +1,4 @@
+using System.ComponentModel.Design.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -62,7 +63,7 @@ namespace DesenvWebApi.WebApi.Controllers
             {
                 var repo = _unitOfWork.GetRepository<Curriculum>();
 
-                var curriculum = new Curriculum(im.Code, im.Name, im.Description);
+                var curriculum = new Curriculum(im.Code, im.Name);
                 repo.Add(curriculum);
                 await _unitOfWork.SaveChangesAsync();
 
@@ -84,15 +85,16 @@ namespace DesenvWebApi.WebApi.Controllers
                     curriculum.SetName(im.Name);
                 }
 
-                if (!string.IsNullOrWhiteSpace(im.Description))
-                {
-                    curriculum.SetDescription(im.Description);
+                await this.DelSubjectAll(id);
+
+                foreach(var subject in im.Subjects){
+                    await this.AddSubject(id, subject.Id);
                 }
 
                 repo.Update(curriculum);
                 await _unitOfWork.SaveChangesAsync();
 
-                return Ok((CurriculumViewModel) curriculum);
+                return Ok();
             });
 
         [HttpDelete("{id}")]
@@ -172,5 +174,17 @@ namespace DesenvWebApi.WebApi.Controllers
 
                 return Ok();
             });
+
+
+        public async Task DelSubjectAll(Guid id) 
+        {
+            var repo = _unitOfWork.GetRepository<Curriculum>();
+            var screpo = _unitOfWork.GetRepository<SubjectCurriculum>();
+            var res = screpo.GetQueryable().Where(c => c.CurriculumId == id);
+            screpo.DeleteRange(res);
+            await  _unitOfWork.SaveChangesAsync();
+        }
+
     }
+
 }

@@ -11,7 +11,6 @@ namespace DesenvWebApi.WebApi.ViewModels
         public DateTime CreatedAt { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
-        public string Description { get; set; }
 
         public IEnumerable<SubjectViewModel> Subjects { get; set; }
 
@@ -26,7 +25,6 @@ namespace DesenvWebApi.WebApi.ViewModels
                 CreatedAt = curriculum.CreatedAt,
                 Code = curriculum.Code,
                 Name = curriculum.Name,
-                Description = curriculum.Description,
                 Subjects = curriculum.Subjects.Select(s => (SubjectViewModel) s.Subject)
             };
         }
