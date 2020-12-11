@@ -16,10 +16,10 @@ namespace DesenvWebApi.Domain
 
         public User(string email, string name)
         {
-            if (string.IsNullOrWhiteSpace(email))
-                throw new ArgumentNullException("Email can't be null");
+            //if (string.IsNullOrWhiteSpace(email))
+                //throw new ArgumentNullException("Email can't be null");
 
-            Email = email;
+            //Email = email;
 
             SetName(name);
         }

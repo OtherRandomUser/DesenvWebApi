@@ -29,6 +29,8 @@ namespace DesenvWebApi.WebApi.Controllers
                 var repo = _unitOfWork.GetRepository<User>();
                 var users = await repo.GetQueryable()
                     .Include(u => u.Curriculum)
+                    .ThenInclude(s => s.Subjects)
+                    .ThenInclude(s => s.Subject)
                     .OrderBy(u => u.CreatedAt)
                     .Select(u => (UserViewModel) u)
                     .ToListAsync();
@@ -46,6 +48,8 @@ namespace DesenvWebApi.WebApi.Controllers
                 var repo = _unitOfWork.GetRepository<User>();
                 var user = await repo.GetQueryable()
                     .Include(u => u.Curriculum)
+                    .ThenInclude(s => s.Subjects)
+                    .ThenInclude(s => s.Subject)
                     .SingleOrDefaultAsync(u => u.Id == id);
 
                 if (user is null)
@@ -59,15 +63,22 @@ namespace DesenvWebApi.WebApi.Controllers
             => ExecuteAsync<UserViewModel>(async () =>
             {
                 var repo = _unitOfWork.GetRepository<User>();
-                var sameEmail = await repo.GetQueryable()
+                /*var sameEmail = await repo.GetQueryable()
                     .SingleOrDefaultAsync(u => u.Email == im.Email);
 
                 if (sameEmail != null)
-                    return BadRequest("Another user with the same email already exists");
+                    return BadRequest("Another user with the same email already exists");*/
 
                 var user = new User(im.Email, im.Name);
                 repo.Add(user);
+                
                 await _unitOfWork.SaveChangesAsync();
+                await SetCurriculum(user.Id, im.Curriculum.Id);
+                user = await repo.GetQueryable()
+                    .Include(u => u.Curriculum)
+                    .ThenInclude(s => s.Subjects)
+                    .ThenInclude(s => s.Subject)
+                    .SingleOrDefaultAsync(u => u.Id == user.Id);
 
                 return Ok((UserViewModel) user);
             });

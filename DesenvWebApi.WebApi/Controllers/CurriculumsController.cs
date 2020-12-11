@@ -67,6 +67,10 @@ namespace DesenvWebApi.WebApi.Controllers
                 repo.Add(curriculum);
                 await _unitOfWork.SaveChangesAsync();
 
+                foreach(var subject in im.Subjects){
+                    await this.AddSubject(curriculum.Id, subject.Id);
+                }
+
                 return Ok((CurriculumViewModel) curriculum);
             });
 
